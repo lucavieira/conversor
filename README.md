@@ -3,7 +3,7 @@ Neste projeto você pode executar:
 ## **npm start**
 
 Inicia o app em modo de desenvolvimento.\
-Abre [http://localhost:3000](http://localhost:3000) para visualizar no navegador.
+Abre em [http://localhost:3000](http://localhost:3000) para visualizar no navegador.
 
 
 ### Observações
