@@ -1,66 +1,115 @@
 import { useState, useEffect } from 'react'
 
-import axios from 'axios';
-import './App.css';
+import Resultado from './components/Resultado'
+import axios from 'axios'
+import './App.css'
 
 export default function App() {
+
+  const Att = () => {
+    useEffect(
+    () => { console.log('Pagina carregada') }
+  )}
+
+  // Lista de moedas válidas / List of valid currencies
+  const moedasValidas = ['USD', 'EUR', 'BRL']
+
+  // Valor e moeda escolhidos pelo usuario / Value and currency chosen by the user
   const [moedas, setMoedas] = useState({
-    de: '',
-    para: '',
-    valor: 1
-  });
-  const [valorConvertido, setValorConvertido] = useState(0)
+    "valor": '',
+    "moeda": moedasValidas[0]
+  })
 
-  const moedasValidas = ['AFN', 'MGA', 'THB', 'PAB', 'ETB', 'BTC', 'BOB', 'VEF', 'XBR', 'GHS', 'SVC', 'CRC', 'CZK', 'DKK', 'ISK', 'NOK', 'SEK', 'NIO', 'SDR', 'GMD', 'MKD', 'DZD', 'IQD', 'JOD', 'KWD', 'LYD', 'RSD', 'TND', 'BHD', 'MAD', 'AED', 'STD', 'DOGE', 'VND', 'AMD', 'USD', 'AUD', 'CAD', 'JMD', 'NAD', 'NZD', 'TWD', 'ZWL', 'BSD', 'KYD', 'BBD', 'BZD', 'BND', 'SGD', 'FJD', 'HKD', 'TTD', 'XCD', 'CVE', 'ETH', 'EUR', 'HUF', 'BIF', 'XAF', 'XOF', 'XPF', 'KMF', 'RWF', 'CHF', 'CHFRTS', 'GNF', 'DJF', 'HTG', 'PYG', 'ANG', 'UAH', 'JPY', 'JPYRTS', 'PGK', 'LAK', 'HRK', 'MWK', 'ZMK', 'AOA', 'MMK', 'GEL', 'ALL', 'HNL', 'MDL', 'RON', 'BGN', 'EGP', 'GBP', 'LBP', 'SDG', 'SYP', 'SZL', 'LTC', 'LSL', 'AZN', 'BAM', 'MZN', 'MNT', 'NGNPARALLEL', 'NGN', 'NGNI', 'TRY', 'ILS', 'MRO', 'MOP', 'ARS', 'CLP', 'COP', 'CUP', 'DOP', 'PHP', 'MXN', 'UYU', 'BWP', 'GTQ', 'ZAR', 'BRL', 'BRLT', 'QAR', 'IRR', 'OMR', 'KHR', 'MYR', 'YER', 'SAR', 'BYN', 'RUBTOM', 'RUBTOD', 'RUB', 'MVR', 'IDR', 'INR', 'MUR', 'NPR', 'PKR', 'LKR', 'SCR', 'KES', 'SOS', 'TZS', 'UGX', 'PEN', 'KGS', 'UZS', 'TJS', 'TMT', 'BDT', 'KZT', 'VUV', 'KRW', 'XAGG', 'XRP', 'CNY', 'CNH', 'PLN']
+  // Armazena o valor convertido de acordo com o valor da cotação
+  const [valorConvertido, setValorConvertido] = useState({
+    "USD": '',
+    "EUR": '',
+    "BRL": ''
+  })
 
-  const listaMoedasValidas = moedasValidas.map(moeda => <option value={moeda}>{moeda}</option>)
+  // Gera um novo componente para cada moeda que não estiver selecionada para converter
+  const outrasMoedas = moedasValidas.map(item => (
+    <>{item != moedas.moeda ? <Resultado item={item} valor={valorConvertido[`${item}`] } /> : <></>}</>
+  ))
 
+  // Preenche a lista de moedas válidas no select
+  const listaMoedasValidas = moedasValidas.map(moeda => (
+    <option key={moeda} value={moeda}>{moeda}</option>
+  ))
+
+  // Função onde calcula o valor da conversão para cada moeda
   const getResponse = () => {
-    var infos = axios.get(`https://economia.awesomeapi.com.br/last/${moedas.de}-${moedas.para}`)
-    infos.then(
-      response => {
-        for(let elemento in response.data){
-          setValorConvertido(response.data[`${elemento}`].bid * moedas.valor);
-        }
-      }, () => {
-        alert('Error: Essa conversão é inválida')
+    for (let coin of moedasValidas){
+      if (coin != moedas.moeda){
+        var infos = axios.get(`https://economia.awesomeapi.com.br/last/${moedas.moeda}-${coin}`)
+
+        infos.then(response => {
+          localStorage.setItem(`${coin}`, response.data[`${moedas.moeda}${coin}`].bid * moedas.valor)
+          if(moedas.moeda == "USD") {
+            setValorConvertido({"USD": valorConvertido.USD, "EUR": localStorage.getItem("EUR"), "BRL": localStorage.getItem("BRL")})
+          } else if(moedas.moeda == "EUR") {
+            setValorConvertido({"USD": localStorage.getItem("USD"), "EUR": valorConvertido.EUR, "BRL": localStorage.getItem("BRL")})
+          }else {
+            setValorConvertido({"USD": localStorage.getItem("USD"), "EUR": localStorage.getItem("EUR"), "BRL": valorConvertido.BRL})
+          }
+        })
       }
-    );
+    }
   }
 
-  const getMoedas = (e) => {
-    if(e.target.getAttribute('name') == 'de') {
-      setMoedas({'de': e.target.value, 'para': moedas.para, 'valor': moedas.valor})
-    }else {
-      setMoedas({'de': moedas.de, 'para': e.target.value, 'valor': moedas.valor})
+  const getMoedas = e => {
+    if (e.target.getAttribute('name') == 'fvalor') {
+      setMoedas({ "valor": e.target.value, "moeda": moedas.moeda })
+    } else {
+      setMoedas({ "valor": moedas.valor, "moeda": e.target.value })
     }
   }
 
   return (
     <>
-      <div className="main">
-        <div className='container'>
-          <h1>Conversor de Moedas</h1>
-          <div className='conversor'>
-            <div className='de'>
-              <label>DE:</label><br />
-              <select values={moedasValidas} name="de" onChange={ (e) => { getMoedas(e) } }>
-                {listaMoedasValidas}
-              </select>
-            </div>
-            <div className='para'>
-              <label>PARA:</label><br />
-              <select values={moedasValidas} name="para" onChange={ (e) => { getMoedas(e) } }>
-                {listaMoedasValidas}
-              </select>
-            </div>
+      <div className="conversao">
+        <p>Informe o valor e a moeda para conversão</p>
+        <hr />
+        <form>
+          <label htmlFor="fvalor">Valor</label>
+          <input
+            type="text"
+            name="fvalor"
+            onChange={e => {
+              getMoedas(e)
+            }}
+          />
+          <label htmlFor="fmoeda">Moeda</label>
+          <select
+            values={moedasValidas}
+            name="fmoedas"
+            id="fmoedas"
+            onChange={e => {
+              getMoedas(e)
+            }}
+          >
+            {listaMoedasValidas}
+          </select>
+        </form>
+        <button onClick={ getResponse }>Converter</button>
+      </div>
+      <div className="resultado">
+        <hr />
+        <p>Resultado da Conversão</p>
+        <form>
+          <div className="data">
+            <label htmlFor="fData">Data da Consulta</label>
+            <input
+              type="text"
+              name="fData"
+              id="fData"
+              value={new Date().toLocaleString()}
+              disabled
+            />
           </div>
-          <button className='btn' onClick={ getResponse }>Converter</button>
-          <p className='resultado'>
-            Valor Convertido: R${ valorConvertido.toFixed(2) }
-          </p>
-        </div>
+          {outrasMoedas}
+        </form>
       </div>
     </>
-  );
+  )
 }
