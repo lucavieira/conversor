@@ -6,8 +6,4 @@ Inicia o app em modo de desenvolvimento.\
 Abre em [http://localhost:3000](http://localhost:3000) para visualizar no navegador.
 
 
-### Observações
-
-**Essa API tem algumas cotações que são invalidas, então logo abaixo deixo o link das possíveis cotações, que são muitas**
-
-[Cotações Possíveis](https://economia.awesomeapi.com.br/xml/available)
+**Esse sistema faz a cotação das principais moedas do mercado, Euro, Real e Dólar. Basta colocar o valor utilizando o ponto para separar as casas decimais e escolher qual moeda quer ver os valores.**
