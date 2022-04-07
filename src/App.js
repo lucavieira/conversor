@@ -38,8 +38,6 @@ export default function App() {
         var infos = axios.get(`https://economia.awesomeapi.com.br/last/${moedas.moeda}-${coin}`)
         
         infos.then(response => {
-          console.log(response.data)
-          console.log(moedas.moeda)
           localStorage.setItem(`${coin}`, response.data[`${moedas.moeda}`].bid * moedas.valor)
           if(moedas.moeda == "USD") {
             setValorConvertido({"USD": valorConvertido.USD, "EUR": localStorage.getItem("EUR"), "BRL": localStorage.getItem("BRL")})
@@ -55,7 +53,7 @@ export default function App() {
 
   const getMoedas = e => {
     if (e.target.getAttribute('name') == 'fvalor') {
-      setMoedas({ "valor": e.target.value, "moeda": moedas.moeda })
+      setMoedas({ "valor": e.target.value.replace(',', '.'), "moeda": moedas.moeda })
     } else {
       setMoedas({ "valor": moedas.valor, "moeda": e.target.value })
     }
