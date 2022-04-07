@@ -1,16 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import Resultado from './components/Resultado'
 import axios from 'axios'
 import './App.css'
 
 export default function App() {
-
-  const Att = () => {
-    useEffect(
-    () => { console.log('Pagina carregada') }
-  )}
-
   // Lista de moedas válidas / List of valid currencies
   const moedasValidas = ['USD', 'EUR', 'BRL']
 
@@ -42,9 +36,11 @@ export default function App() {
     for (let coin of moedasValidas){
       if (coin != moedas.moeda){
         var infos = axios.get(`https://economia.awesomeapi.com.br/last/${moedas.moeda}-${coin}`)
-
+        
         infos.then(response => {
-          localStorage.setItem(`${coin}`, response.data[`${moedas.moeda}${coin}`].bid * moedas.valor)
+          console.log(response.data)
+          console.log(moedas.moeda)
+          localStorage.setItem(`${coin}`, response.data[`${moedas.moeda}`].bid * moedas.valor)
           if(moedas.moeda == "USD") {
             setValorConvertido({"USD": valorConvertido.USD, "EUR": localStorage.getItem("EUR"), "BRL": localStorage.getItem("BRL")})
           } else if(moedas.moeda == "EUR") {
