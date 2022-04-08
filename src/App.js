@@ -2,9 +2,20 @@ import { useState } from 'react'
 
 import Resultado from './components/Resultado'
 import axios from 'axios'
-import './App.css'
 
-export default function App() {
+import Title from './styled_components/Title'
+import Descricao from './styled_components/Descricao'
+import Label from './styled_components/Label'
+import Input from './styled_components/Input'
+import Option from './styled_components/Option'
+import Select from './styled_components/Select'
+import Form from './styled_components/Form'
+import Button from './styled_components/Button'
+import Painel from './styled_components/Painel'
+import Container from './styled_components/Container'
+
+function App() {
+  const data = new Date().getDate() + ' / ' + new Date().getMonth() + ' / ' + new Date().getFullYear()
   // Lista de moedas válidas / List of valid currencies
   const moedasValidas = ['USD', 'EUR', 'BRL']
 
@@ -28,7 +39,7 @@ export default function App() {
 
   // Preenche a lista de moedas válidas no select
   const listaMoedasValidas = moedasValidas.map(moeda => (
-    <option key={moeda} value={moeda}>{moeda}</option>
+    <Option key={moeda} value={moeda}>{moeda}</Option>
   ))
 
   // Função onde calcula o valor da conversão para cada moeda
@@ -51,6 +62,7 @@ export default function App() {
     }
   }
 
+  // Função que captura o valor digitado pelo usuario e a moeda escolhida
   const getMoedas = e => {
     if (e.target.getAttribute('name') == 'fvalor') {
       setMoedas({ "valor": e.target.value.replace(',', '.'), "moeda": moedas.moeda })
@@ -61,49 +73,45 @@ export default function App() {
 
   return (
     <>
-      <div className="conversao">
-        <p>Informe o valor e a moeda para conversão</p>
+      <Painel>
+        <Title>Conversor</Title>
+        <Descricao>Informe o valor e a moeda para conversão</Descricao>
         <hr />
-        <form>
-          <label htmlFor="fvalor">Valor</label>
-          <input
-            type="text"
-            name="fvalor"
-            onChange={e => {
-              getMoedas(e)
-            }}
-          />
-          <label htmlFor="fmoeda">Moeda</label>
-          <select
-            values={moedasValidas}
-            name="fmoedas"
-            id="fmoedas"
-            onChange={e => {
-              getMoedas(e)
-            }}
-          >
-            {listaMoedasValidas}
-          </select>
-        </form>
-        <button onClick={ getResponse }>Converter</button>
-      </div>
-      <div className="resultado">
-        <hr />
-        <p>Resultado da Conversão</p>
-        <form>
-          <div className="data">
-            <label htmlFor="fData">Data da Consulta</label>
-            <input
+        <Form>
+          <Container>
+            <Label htmlFor="fvalor">Valor</Label>
+            <Input
               type="text"
-              name="fData"
-              id="fData"
-              value={new Date().toLocaleString()}
-              disabled
+              name="fvalor"
+              onChange={e => {
+                getMoedas(e)
+              }}
             />
-          </div>
+          </Container>
+          <Container>
+            <Label htmlFor="fmoeda">Moeda</Label>
+            <Select
+              values={moedasValidas}
+              name="fmoedas"
+              id="fmoedas"
+              onChange={e => {
+                getMoedas(e)
+              }}
+            >
+              {listaMoedasValidas}
+            </Select>
+          </Container>
+        </Form>
+        <Button onClick={ getResponse }>Converter</Button>
+        <Descricao>Resultado da Conversão</Descricao>
+        <hr />
+        <Form>
           {outrasMoedas}
-        </form>
-      </div>
+        </Form>
+        <Descricao>Última consulta: {data}</Descricao>
+      </Painel>
     </>
   )
 }
+
+export default App
