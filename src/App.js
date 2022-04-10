@@ -1,18 +1,18 @@
 import { useState } from 'react'
 
-import Resultado from './components/Resultado'
-import axios from 'axios'
-
 import Title from './styled_components/Title'
 import Descricao from './styled_components/Descricao'
 import Label from './styled_components/Label'
 import Input from './styled_components/Input'
-import Option from './styled_components/Option'
 import Select from './styled_components/Select'
 import Form from './styled_components/Form'
 import Button from './styled_components/Button'
 import Painel from './styled_components/Painel'
 import Container from './styled_components/Container'
+import Option from './styled_components/Option'
+
+import Resultado from './components/Resultado'
+import axios from 'axios'
 
 function App() {
   const data = new Date().getDate() + ' / ' + new Date().getMonth() + ' / ' + new Date().getFullYear()
@@ -34,7 +34,7 @@ function App() {
 
   // Gera um novo componente para cada moeda que não estiver selecionada para converter
   const outrasMoedas = moedasValidas.map(item => (
-    <>{item != moedas.moeda ? <Resultado item={item} valor={valorConvertido[`${item}`] } /> : <></>}</>
+    <>{item != moedas.moeda ? <Resultado item={item} valor={valorConvertido[`${item}`]} /> : <></>}</>
   ))
 
   // Preenche a lista de moedas válidas no select
@@ -44,18 +44,18 @@ function App() {
 
   // Função onde calcula o valor da conversão para cada moeda
   const getResponse = () => {
-    for (let coin of moedasValidas){
-      if (coin != moedas.moeda){
+    for (let coin of moedasValidas) {
+      if (coin != moedas.moeda) {
         var infos = axios.get(`https://economia.awesomeapi.com.br/last/${moedas.moeda}-${coin}`)
-        
+
         infos.then(response => {
           localStorage.setItem(`${coin}`, response.data[`${moedas.moeda}`].bid * moedas.valor)
-          if(moedas.moeda == "USD") {
-            setValorConvertido({"USD": valorConvertido.USD, "EUR": localStorage.getItem("EUR"), "BRL": localStorage.getItem("BRL")})
-          } else if(moedas.moeda == "EUR") {
-            setValorConvertido({"USD": localStorage.getItem("USD"), "EUR": valorConvertido.EUR, "BRL": localStorage.getItem("BRL")})
-          }else {
-            setValorConvertido({"USD": localStorage.getItem("USD"), "EUR": localStorage.getItem("EUR"), "BRL": valorConvertido.BRL})
+          if (moedas.moeda == "USD") {
+            setValorConvertido({ "USD": valorConvertido.USD, "EUR": localStorage.getItem("EUR"), "BRL": localStorage.getItem("BRL") })
+          } else if (moedas.moeda == "EUR") {
+            setValorConvertido({ "USD": localStorage.getItem("USD"), "EUR": valorConvertido.EUR, "BRL": localStorage.getItem("BRL") })
+          } else {
+            setValorConvertido({ "USD": localStorage.getItem("USD"), "EUR": localStorage.getItem("EUR"), "BRL": valorConvertido.BRL })
           }
         })
       }
@@ -102,7 +102,7 @@ function App() {
             </Select>
           </Container>
         </Form>
-        <Button onClick={ getResponse }>Converter</Button>
+        <Button onClick={getResponse}>Converter</Button>
         <Descricao>Resultado da Conversão</Descricao>
         <hr />
         <Form>
