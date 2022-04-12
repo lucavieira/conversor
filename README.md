@@ -10,7 +10,7 @@
   * **npm start** (Inicia o App)
 
 ## Images
-  <img src="./public/images/project_img.png">
+  <img src="./public/images/project_img.png" style="width: 500px;">
 
 ## Tecnologias
  * ReactJS
