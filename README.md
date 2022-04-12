@@ -9,6 +9,9 @@
 * e digitar um dos comandos abaixo:
   * **npm start** (Inicia o App)
 
+## Images
+  <img src="./public/images/project_img.png">
+
 ## Tecnologias
  * ReactJS
  * Javascript
