@@ -1,6 +1,6 @@
 # Conversor
 <img src="https://img.shields.io/apm/l/vim-mode?style=plastic" />
-**Com este sistema é possivel fazer a cotação das principais moedas do mercado, Euro, Real e Dólar. Basta colocar o valor, utilizando o ponto para separar as casas decimais e escolher qual moeda quer ver os valores.**
+**Com este sistema é possivel fazer a cotação das principais moedas do mercado, Euro, Real e Dólar. Basta colocar o valor e escolher a moeda.**
 
 ## Para rodar o projeto
 * Clonar o Repositório.
