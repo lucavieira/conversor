@@ -2,6 +2,10 @@
 <img src="https://img.shields.io/apm/l/vim-mode?style=plastic" />
 <strong>Com este sistema é possivel fazer a cotação das principais moedas do mercado, Euro, Real e Dólar. Basta colocar o valor e escolher a moeda.</strong>
 
+<br />
+<br />
+<strong>Version: 1.0</strong>
+
 ## Para rodar o projeto
 * Clonar o Repositório.
 * Abrir o CMD.
